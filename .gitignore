@@ -1,0 +1,3 @@
+#ignore all the _pycache_files named with extension: *.pyc
+*.pyc
+first/__pycache__jk:
