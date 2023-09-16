@@ -1,5 +1,5 @@
 from typing import Union
-
+from enum import Enum
 from fastapi import FastAPI
 from pydantic import BaseModel
 
@@ -10,6 +10,10 @@ class Item(BaseModel):
     price:float
     is_offer: Union[bool, None] = None
 
+class ModelName(str, Enum):
+    alexnet = "alexnet"
+    resnet = "resnet"
+    lenet = "lenet"
 
 # The @app.get("/") tells FastAPI that the function right below is in charge of handling requests that go to:
 
@@ -40,3 +44,14 @@ def read_item(item_id: int, q: Union[str, None] = None):
 @app.put("/items/{item_id}")
 def update_item(item_id: int, item: Item):
     return {"item_price": item.price, "item_id": item_id}
+
+
+@app.get("/models/{model_name}")
+async def get_model(model_name: ModelName):
+    if model_name is ModelName.alexnet:
+        return {"model_name": model_name, "message": "Deep Learning FTW!"}
+
+    if model_name.value == "lenet":
+        return {"model_name": model_name, "message": "LeCNN all the images"}
+
+    return {"model_name": model_name, "message": "Have some residuals"}
