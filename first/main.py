@@ -23,6 +23,12 @@ class Item(BaseModel):
 def read_root():
     return {"Hello": "World"}
 
+#path operations are evaluated in order, you need to make sure that the path for /users/me is declared before the one for /users/{user_id}:
+#Otherwise, the path  that comes in the method after this one for /users/{user_id} would match also for /users/me, "thinking" that it's receiving a parameter user_id with a value of "me"
+@app.get("/users/me")
+async def read_user_me():
+    return {"user_id": "the current user"}
+
 # The value of the PATH PARAMETER item_id will be passed to your function as the argument item_id.
 # So, if you run this example and go to http://127.0.0.1:8000/items/foo, you will see a response of:
 # {"item_id":"foo"}
