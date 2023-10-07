@@ -51,7 +51,11 @@ async def get_model(model_name: ModelName):
     if model_name is ModelName.alexnet:
         return {"model_name": model_name, "message": "Deep Learning FTW!"}
 
+<<<<<<< HEAD
     if model_name.value == "lenet": # this is another construction to show one can use `value`
+=======
+    if model_name.value == "lenet":
+>>>>>>> 81ce5e4dac56ad4df4f4433c5294eda7ca606ba7
         return {"model_name": model_name, "message": "LeCNN all the images"}
 
     return {"model_name": model_name, "message": "Have some residuals"}
