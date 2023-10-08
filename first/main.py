@@ -3,7 +3,13 @@ from enum import Enum
 from fastapi import FastAPI
 from pydantic import BaseModel
 
-app = FastAPI() ## This app is the same one referred by uvicorn in the command:uvicorn main:app --reload
+## This app is the same one referred by uvicorn in the command:uvicorn main:app --reload
+# The command uvicorn main:app refers to:
+
+#     main: the file main.py (the Python "module").
+#     app: the object created inside of main.py with the line app = FastAPI().
+#     --reload: make the server restart after code changes. Only do this for development.
+app = FastAPI() 
 
 class Item(BaseModel):
     name:str ="ciaociao "
@@ -45,6 +51,23 @@ def read_item(item_id: int, q: Union[str, None] = None):
 def update_item(item_id: int, item: Item):
     return {"item_price": item.price, "item_id": item_id}
 
+# In this case, the function parameter q will be optional, and will be None by default.
+@app.get("/items2/{item_id}")
+async def read_item(item_id: str, q: str | None = None):
+    if q:
+        return {"item_id": item_id, "q": q}
+    return {"item_id": item_id}
+
+@app.get("/items3/{item_id}")
+async def read_item(item_id: str, q: str | None = None, short: bool = False):
+    item = {"item_id": item_id}
+    if q:
+        item.update({"q": q})
+    if not short:
+        item.update(
+            {"description": "This is an amazing item that has a long description"}
+        )
+    return item
 
 @app.get("/models/{model_name}")
 async def get_model(model_name: ModelName):
